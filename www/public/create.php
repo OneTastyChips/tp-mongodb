@@ -8,11 +8,27 @@ use Twig\Error\SyntaxError;
 
 $twig = getTwig();
 $manager = getMongoDbManager();
+$collection = $manager->selectCollection('tp');
 
 // petite aide : https://github.com/VSG24/mongodb-php-examples
 
 if (!empty($_POST)) {
-    // @todo coder l'enregistrement d'un nouveau livre en lisant le contenu de $_POST
+    $title   = $_POST['title'] ?? '';
+    $author  = $_POST['author'] ?? '';
+    $century = $_POST['century'] ?? '';
+
+    $doc = [
+        'titre'     => $title,
+        'auteur'    => $author,
+        'createdAt' => new MongoDB\BSON\UTCDateTime(),
+    ];
+    if ($century !== '') {
+        $doc['siecle'] = (int) $century;
+    }
+
+    $collection->insertOne($doc);
+    header('Location: /index.php');
+    exit;
 } else {
 // render template
     try {
