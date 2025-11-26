@@ -12,6 +12,8 @@ $id = $_GET['id'] ?? null;
 if ($id) {
     try {
         $collection->deleteOne(['_id' => new ObjectId($id)]);
+        $redis = getRedisClient();
+        $redis->del('tp:manuscrits:totalDocuments');
     } catch (Exception $e) {
         echo "Erreur : " . $e->getMessage();
         exit;

@@ -17,6 +17,7 @@
             <th>Auteur</th>
             <th>Actions</th>
         </tr>
+
         {% for document in list %}
             <tr>
                 <td>{{ document._id }}</td>
@@ -30,6 +31,28 @@
                     <a href="delete.php?id={{ document._id }}">supprimer</a>
                 </td>
             </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">Aucun manuscrit trouvé.</td>
+            </tr>
         {% endfor %}
     </table>
+
+    <nav class="pagination" style="margin-top: 20px;">
+        {% if currentPage > 1 %}
+            <a href="?page={{ currentPage - 1 }}">Précédent</a>
+        {% endif %}
+
+        {% for page in 1..totalPages %}
+            {% if page == currentPage %}
+                <strong style="margin: 0 5px;">[{{ page }}]</strong>
+            {% else %}
+                <a href="?page={{ page }}" style="margin: 0 5px;">{{ page }}</a>
+            {% endif %}
+        {% endfor %}
+
+        {% if currentPage < totalPages %}
+            <a href="?page={{ currentPage + 1 }}">Suivant</a>
+        {% endif %}
+    </nav>
 {% endblock %}

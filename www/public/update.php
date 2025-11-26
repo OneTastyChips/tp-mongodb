@@ -24,6 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && !empty($_POST['id'])) {
                 'siecle' => (int) $century
             ]]
         );
+        $redis = getRedisClient();
+        $redis->del('tp:manuscrits:totalDocuments');
     } catch (Exception $e) {
         echo "Erreur : " . $e->getMessage();
         exit;

@@ -10,8 +10,6 @@ $twig = getTwig();
 $manager = getMongoDbManager();
 $collection = $manager->selectCollection('tp');
 
-// petite aide : https://github.com/VSG24/mongodb-php-examples
-
 if (!empty($_POST)) {
     $title   = $_POST['title'] ?? '';
     $author  = $_POST['author'] ?? '';
@@ -27,6 +25,10 @@ if (!empty($_POST)) {
     }
 
     $collection->insertOne($doc);
+
+    $redis = getRedisClient();
+    $redis->del('tp:manuscrits:totalDocuments');
+
     header('Location: /index.php');
     exit;
 } else {

@@ -25,3 +25,34 @@ function getMongoDbManager(): Database
     return $client->selectDatabase($_ENV['MDB_DB']);
 }
 
+
+
+function getRedisClient(): ?PredisClient
+{
+    $redisEnable = getenv("REDIS_ENABLE") === "true";
+
+    if (!$redisEnable) {
+        return null;
+    }
+
+    $host = getenv("REDIS_HOST") ?: "127.0.0.1";
+    $port = getenv("REDIS_PORT") ?: 6379;
+    $password = getenv("REDIS_PASSWORD") ?: null;
+
+    $params = [
+        'scheme' => 'tcp',
+        'host'   => $host,
+        'port'   => $port,
+    ];
+
+    if ($password) {
+        $params['password'] = $password;
+    }
+
+    try {
+        return new PredisClient($params);
+    } catch (Exception $e) {
+        error_log("Erreur Redis : " . $e->getMessage());
+        return null;
+    }
+}

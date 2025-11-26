@@ -11,13 +11,13 @@ services:
 #            - MONGO_INITDB_DATABASE=auth
         networks:
             - local
-#    tpmongo-mongosh:
-#        container_name: "tpmongo-mongosh"
-#        build: mongosh
-#        depends_on:
-#            -   tpmongo-mongodb
-#        networks:
-#            - local
+    tpmongo-mongosh:
+        container_name: "tpmongo-mongosh"
+        build: mongosh
+        depends_on:
+            -   tpmongo-mongodb
+        networks:
+            - local
     tpmongo-mongo-gui:
         container_name: "tpmongo-mongo-gui"
         image: ugleiton/mongo-gui
@@ -55,7 +55,7 @@ services:
         ports:
             - 8081:8081
         environment:
-            - REDIS_HOSTS=local:tpmongo-redis:6379
+            - RE  DIS_HOSTS=local:tpmongo-redis:6379
         networks:
             - local
     tpmongo-influxdb:
